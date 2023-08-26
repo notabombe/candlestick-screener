@@ -2,15 +2,12 @@ import os, pandas
 
 def is_consolidating(df, percentage=2):
     recent_candlesticks = df[-15:]
-    
+
     max_close = recent_candlesticks['Close'].max()
     min_close = recent_candlesticks['Close'].min()
 
     threshold = 1 - (percentage / 100)
-    if min_close > (max_close * threshold):
-        return True        
-
-    return False
+    return min_close > max_close * threshold
 
 def is_breaking_out(df, percentage=2.5):
     last_close = df[-1:]['Close'].values[0]
@@ -24,10 +21,10 @@ def is_breaking_out(df, percentage=2.5):
     return False
 
 for filename in os.listdir('datasets/daily'):
-    df = pandas.read_csv('datasets/daily/{}'.format(filename))
-    
+    df = pandas.read_csv(f'datasets/daily/{filename}')
+
     if is_consolidating(df, percentage=2.5):
-        print("{} is consolidating".format(filename))
+        print(f"{filename} is consolidating")
 
     if is_breaking_out(df):
-        print("{} is breaking out".format(filename))
+        print(f"{filename} is breaking out")

@@ -15,7 +15,7 @@ def snapshot():
                 continue
             symbol = line.split(",")[0]
             data = yf.download(symbol, start="2020-01-01", end="2020-08-01")
-            data.to_csv('datasets/daily/{}.csv'.format(symbol))
+            data.to_csv(f'datasets/daily/{symbol}.csv')
 
     return {
         "code": "success"
@@ -32,7 +32,7 @@ def index():
 
     if pattern:
         for filename in os.listdir('datasets/daily'):
-            df = pandas.read_csv('datasets/daily/{}'.format(filename))
+            df = pandas.read_csv(f'datasets/daily/{filename}')
             pattern_function = getattr(talib, pattern)
             symbol = filename.split('.')[0]
 
